@@ -22,7 +22,7 @@ public static class CharacterStatModifiersExtension
         new ConditionalWeakTable<CharacterStatModifiers, CharacterStatModifiersnullData>();
 
 
-    public static CharacterStatModifiersnullData GetNullData(this CharacterStatModifiers characterstats)
+    internal static CharacterStatModifiersnullData GetNullData(this CharacterStatModifiers characterstats)
     {
         return data.GetOrCreateValue(characterstats);
     }
@@ -31,8 +31,12 @@ public static class CharacterStatModifiersExtension
     {
         characterstats.GetNullData().nulls = Mathf.Clamp(characterstats.GetNullData().nulls+value,0,1000000);
     }
+    public static int GetNulls(this CharacterStatModifiers characterstats)
+    {
+        return characterstats.GetNullData().nulls;
+    }
 
-    public static void AddData(this CharacterStatModifiers characterstats, CharacterStatModifiersnullData value)
+    internal static void AddData(this CharacterStatModifiers characterstats, CharacterStatModifiersnullData value)
     {
         try
         {

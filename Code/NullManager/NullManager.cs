@@ -36,7 +36,7 @@ public class NullManager : MonoBehaviour
     public int GetNullValue(CardInfo.Rarity rarity){
         return (int)(1f /RarityUtils.GetRarityData(rarity).relativeRarity);
     }
-    internal NullCardInfo GetNullCardInfo(string card, int player){
+    public NullCardInfo GetNullCardInfo(string card, int player){
         return GetNullCardInfo(card, PlayerManager.instance.players.Find(p=>p.playerID == player));
     }
     public NullCardInfo GetNullCardInfo(string card, Player player){

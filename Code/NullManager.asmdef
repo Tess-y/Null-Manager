@@ -1,0 +1,27 @@
+{
+    "name": "NullManager",
+    "references": [
+        "ModdingUtils",
+        "UnboundLib",
+        "RarityLib",
+        "Unity.TextMeshPro",
+        "CardChoiceSpawnUniqueCardPatch",
+        "TabInfo"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "0Harmony.dll",
+        "BepInEx.dll",
+        "Assembly-CSharp.dll",
+        "PhotonRealtime.dll",
+        "PhotonUnityNetworking.dll",
+        "SonigonAudioEngine.Runtime.dll",
+        "Photon3Unity3D.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

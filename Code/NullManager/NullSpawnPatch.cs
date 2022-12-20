@@ -47,6 +47,7 @@ class SpawnNulls
     [HarmonyPatch(typeof(Cards),"PlayerIsAllowedCard")]
     [HarmonyPostfix]
     private static void PatchAllowed(Player player, CardInfo card, ref bool __result){
+        if(player == null || card == null) return;
         if(__result && card.GetNullData().isAntiCard){
             if(CardChoice.instance.IsPicking && player.playerID == CardChoice.instance.pickrID){
                 if(nullTotal((List<GameObject>)CardChoice.instance.GetFieldValue("spawnedCards")) < player.data.stats.GetNullData().nulls){

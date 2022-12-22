@@ -25,6 +25,8 @@ public class NullManager : MonoBehaviour
         RarityLib.Utils.RarityUtils.Rarities.Values.ToList().ForEach(rarity =>{
             NullCardInfo info = gameObject.AddComponent<NullCardInfo>();
             info.rarity = rarity.value;
+            info.name = "[]";
+            info.cardDestription = "Adds a random nulled card of this rarity to a player";
             info.randomCard = true;
             info.categories = new CardCategory[]{CustomCardCategories.instance.CardCategory("nullCard")};
             info.blacklistedCategories = new CardCategory[0];
@@ -37,16 +39,13 @@ public class NullManager : MonoBehaviour
         return (int)(1f /RarityUtils.GetRarityData(rarity).relativeRarity);
     }
     public NullCardInfo GetNullCardInfo(string card, int player){
-        return GetNullCardInfo(card, PlayerManager.instance.players.Find(p=>p.playerID == player));
-    }
-    public NullCardInfo GetNullCardInfo(string card, Player player){
-        if(!nullDic.ContainsKey(player.playerID))
-            nullDic[player.playerID] = new Dictionary<string, NullCardInfo>();
-        var infoDic = nullDic[player.playerID];
+        if(!nullDic.ContainsKey(player))
+            nullDic[player] = new Dictionary<string, NullCardInfo>();
+        var infoDic = nullDic[player];
         if(!infoDic.ContainsKey(card)){
             var info = gameObject.AddComponent<NullCardInfo>();
             info.NulledSorce = ((DefaultPool)PhotonNetwork.PrefabPool).ResourceCache[card].GetComponent<CardInfo>();
-            info.PlayerId = player.playerID;
+            info.PlayerId = player;
             info.cardName = "[]";
             info.rarity = info.NulledSorce.rarity;
             info.blacklistedCategories = new CardCategory[0];
@@ -58,13 +57,17 @@ public class NullManager : MonoBehaviour
         int amount = GetNullValue(infoDic[card].NulledSorce.rarity);
         List<CardInfoStat> list = new List<CardInfoStat>();
         list.Add(new CardInfoStat{positive = true, stat = $"null{(amount == 1?"":"s")}", amount = $"- <b>{amount}</b> "});
-        if(NullStats.ContainsKey(player.playerID))
-            NullStats[player.playerID].Values.ToList().ForEach(stats => stats.ToList().ForEach(stat => list.Add(stat)));
-        if(NullRarityStats.ContainsKey(player.playerID))
-            if(NullRarityStats[player.playerID].ContainsKey(infoDic[card].NulledSorce.rarity))
-                NullRarityStats[player.playerID][infoDic[card].NulledSorce.rarity].Values.ToList().ForEach(stats => stats.ToList().ForEach(stat => list.Add(stat)));
+        if(NullStats.ContainsKey(player))
+            NullStats[player].Values.ToList().ForEach(stats => stats.ToList().ForEach(stat => list.Add(stat)));
+        if(NullRarityStats.ContainsKey(player))
+            if(NullRarityStats[player].ContainsKey(infoDic[card].NulledSorce.rarity))
+                NullRarityStats[player][infoDic[card].NulledSorce.rarity].Values.ToList().ForEach(stats => stats.ToList().ForEach(stat => list.Add(stat)));
         infoDic[card].cardStats = list.ToArray();
         return infoDic[card];
+       
+    }
+    public NullCardInfo GetNullCardInfo(string card, Player player){
+         return GetNullCardInfo(card, player.playerID );
     }
 
     public NullCardInfo GetRandomNullWithRarity(Player player, CardInfo.Rarity rarity){

@@ -6,7 +6,8 @@
         "RarityLib",
         "Unity.TextMeshPro",
         "CardChoiceSpawnUniqueCardPatch",
-        "TabInfo"
+        "TabInfo",
+        "GameSaver"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

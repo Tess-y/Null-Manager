@@ -4,6 +4,7 @@ using HarmonyLib;
 using ModdingUtils.Utils;
 using Photon.Pun;
 using UnboundLib;
+using UnboundLib.Utils;
 
 namespace Nullmanager{
 [HarmonyPatch]
@@ -67,5 +68,14 @@ internal class AddNullToPlayerPatch
         }
         return true;
     }
+
+    [HarmonyPatch(typeof(CardManager),nameof(CardManager.GetCardInfoWithName))]
+    [HarmonyPostfix]
+    public static void GetCardInfoWithName(string cardName, ref CardInfo __result){
+        if(__result == null && cardName.StartsWith("___NULL___")){
+            __result =  NullManager.instance.GetNullCardInfo(cardName.Substring(10),-1);
+        }
+    }
+
 }
 }

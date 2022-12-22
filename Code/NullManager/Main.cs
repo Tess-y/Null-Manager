@@ -10,13 +10,14 @@ namespace Nullmanager{
 [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency("pykess.rounds.plugins.cardchoicespawnuniquecardpatch", BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency("com.willuwontu.rounds.tabinfo", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("ot.dan.rounds.gamesaver", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(ModId, ModName, Version)]
 [BepInProcess("Rounds.exe")]
 public class Main : BaseUnityPlugin
 {
     private const string ModId = "com.Root.Null";
     private const string ModName = "NullManager";
-    public const string Version = "1.0.0";  
+    public const string Version = "1.0.1";  
     internal static AssetBundle Assets;
     internal static Harmony harmony;
     public static Main instance { get; private set; }
@@ -37,6 +38,9 @@ public class Main : BaseUnityPlugin
         var plugins = (List<BaseUnityPlugin>)typeof(BepInEx.Bootstrap.Chainloader).GetField("_plugins", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
         if(plugins.Exists(plugin => plugin.Info.Metadata.GUID == "com.willuwontu.rounds.tabinfo")){
             TabinfoInterface.Setup();
+        }
+        if(plugins.Exists(plugin => plugin.Info.Metadata.GUID == "ot.dan.rounds.gamesaver")){
+            GameSaverPatch.Patch();
         }
         NullManager.instance.SetUp();
     }

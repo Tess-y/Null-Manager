@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Photon.Pun;
+﻿using Photon.Pun;
+using System.Linq;
+using TMPro;
 using UnboundLib;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 namespace Nullmanager {
     public class NullCard: MonoBehaviour, IPunInstantiateMagicCallback {
         public void OnPhotonInstantiate(PhotonMessageInfo info) //Scale,Card,playerID

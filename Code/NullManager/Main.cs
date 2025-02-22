@@ -1,22 +1,25 @@
 using BepInEx;
 using HarmonyLib;
-using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnboundLib.GameModes;
+using UnityEngine;
+
 namespace Nullmanager {
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("pykess.rounds.plugins.cardchoicespawnuniquecardpatch", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.willuwontu.rounds.tabinfo", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("ot.dan.rounds.gamesaver", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.rsmind.rounds.fancycardbar", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(ModId, ModName, Version)]
     [BepInProcess("Rounds.exe")]
     public class Main: BaseUnityPlugin {
         private const string ModId = "com.Root.Null";
         private const string ModName = "NullManager";
-        public const string Version = "1.0.4";
+        public const string Version = "1.3.0";
         internal static AssetBundle Assets;
         internal static Harmony harmony;
         public static Main instance { get; private set; }
@@ -31,7 +34,7 @@ namespace Nullmanager {
             PhotonNetwork.PrefabPool.RegisterPrefab(NullManager.instance.NullCard.name, NullManager.instance.NullCard);
 
         }
-
+         
         void Start() {
             var plugins = (List<BaseUnityPlugin>)typeof(BepInEx.Bootstrap.Chainloader).GetField("_plugins", BindingFlags.NonPublic|BindingFlags.Static).GetValue(null);
             if(plugins.Exists(plugin => plugin.Info.Metadata.GUID=="com.willuwontu.rounds.tabinfo")) {
@@ -41,6 +44,11 @@ namespace Nullmanager {
                 GameSaverPatch.Patch();
             }
             NullManager.instance.SetUp();
+            GameModeManager.AddHook(GameModeHooks.HookGameStart, RestNulls);
+        }
+        internal IEnumerator RestNulls(object _) {
+            PlayerManager.instance.players.ForEach(p => p.data.stats.GetNullData().nulls = 0);
+            yield break;
         }
     }
 }

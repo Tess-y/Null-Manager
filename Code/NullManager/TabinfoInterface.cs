@@ -1,12 +1,12 @@
-using System;
 using HarmonyLib;
+using System;
+using System.Linq;
 using TabInfo.Utils;
+using TMPro;
 using UnboundLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
 
 namespace Nullmanager {
     public class TabinfoInterface {
@@ -16,7 +16,7 @@ namespace Nullmanager {
 
             Main.harmony.Patch(typeof(PlayerCardButton).GetMethod("OnPointerEnter"), new HarmonyMethod(typeof(TabinfoInterface).GetMethod("Prefix")));
         }
-
+        
         public static bool Prefix(PlayerCardButton __instance, PointerEventData eventData) {
             if(__instance.card is NullCardInfo nullCard) {
                 GameObject displayedCard = (GameObject)__instance.GetFieldValue("displayedCard");
@@ -29,8 +29,8 @@ namespace Nullmanager {
                 displayedCard.SetActive(false);
                 var cardObj = GameObject.Instantiate(nullCard.NulledSorce.gameObject, displayedCard.transform);
                 CardInfo card = cardObj.GetComponent<CardInfo>();
-                card.GetComponent<CardInfo>().cardDestription="";
-                card.GetComponent<CardInfo>().cardStats=nullCard.cardStats;
+                GameObject.DestroyImmediate(card);
+                card = CopyComponent<CardInfo>(nullCard, cardObj);
                 displayedCard.SetActive(true);
                 var cardVis = cardObj.GetComponentInChildren<CardVisuals>();
                 cardVis.firstValueToSet=true;
@@ -65,6 +65,16 @@ namespace Nullmanager {
 
         private static GameObject Instantiate(GameObject cardHolderTemplate, Transform transform) {
             throw new NotImplementedException();
+        }
+
+        private static T CopyComponent<T>(T original, GameObject destination) where T : Component {
+            System.Type type = original.GetType();
+            Component copy = destination.AddComponent(type);
+            System.Reflection.FieldInfo[] fields = type.GetFields();
+            foreach(System.Reflection.FieldInfo field in fields) {
+                field.SetValue(copy, field.GetValue(original));
+            }
+            return copy as T;
         }
     }
 }

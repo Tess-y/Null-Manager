@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2729970148426556808}
   - component: {fileID: 2729970148426556811}
+  - component: {fileID: 114145694523842970}
   m_Layer: 0
   m_Name: NullManger
   m_TagString: Untagged
@@ -46,4 +47,18 @@ MonoBehaviour:
   AntiCardBase: {fileID: 1720757555582362, guid: 34a5f98e69b290d49b81f29c93a0c54a,
     type: 3}
   NullCard: {fileID: 3838331248543109557, guid: b8a124b406582484792718426e6710c5,
+    type: 3}
+--- !u!114 &114145694523842970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729970148426556810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1618194807, guid: 51bdd34c8d7bdd4448a98ae042549d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fancyIcon: {fileID: 1790492772407996393, guid: 05b1c150115b2c648be45fdb9172afb4,
     type: 3}

@@ -1,14 +1,12 @@
-﻿using System.Collections;
+﻿using CardChoiceSpawnUniqueCardPatch.CustomCategories;
 using Photon.Pun;
-using System.Collections.Generic;
-using UnityEngine;
 using RarityLib.Utils;
-using System.Linq;
-using ModdingUtils.Extensions;
 using System;
-using CardChoiceSpawnUniqueCardPatch.CustomCategories;
-using UnboundLib.Utils;
+using System.Collections.Generic;
+using System.Linq;
 using UnboundLib;
+using UnboundLib.Utils;
+using UnityEngine;
 namespace Nullmanager {
     public class NullManager: MonoBehaviour {
         public static NullManager instance;
@@ -45,12 +43,15 @@ namespace Nullmanager {
                 var info = gameObject.AddComponent<NullCardInfo>();
                 info.NulledSorce=((DefaultPool)PhotonNetwork.PrefabPool).ResourceCache[card].GetComponent<CardInfo>();
                 info.PlayerId=player;
-                info.cardName="[]";
+                info.cardName="[]"+info.NulledSorce.cardName;
                 info.rarity=info.NulledSorce.rarity;
                 info.blacklistedCategories=new CardCategory[0];
                 info.GetNullData().isAntiCard=false;
                 info.sourceCard=info;
                 info.categories=new CardCategory[] { CustomCardCategories.instance.CardCategory("nullCard") };
+                info.cardBase = info.NulledSorce.cardBase;
+                info.colorTheme = info.NulledSorce.colorTheme;
+                info.cardArt = info.NulledSorce.cardArt;
                 infoDic[card]=info;
             }
             int amount = GetNullValue(infoDic[card].NulledSorce.rarity);
